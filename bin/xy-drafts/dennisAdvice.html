@@ -1,0 +1,87 @@
+<div>
+    <div>
+        <p>First Name : </p>
+        <p data-text-firstName='{maxLength:30,required:true}'>John</p>
+        <p>Last Name :</p>
+        <p data-boolean-variableName>true</p>
+        <form method="post">
+            <input type="checkbox" id="male" name="male" value="male">
+            <label for="male">Male</label><br>
+            <input type="checkbox" id="female" name="female" value="female">
+            <label for="female">Female</label><br>
+            <input type="submit" value="Submit">
+        </form>
+        <p class="static">Species: Human</p>
+    </div>
+    <div>
+        <span class="#" data-i18n-destination>Destination</span>
+        <span class="#" data-i18n-person>Person</span>
+        <span class="#" data-i18n-arrival>Arrival</span>
+        <span class="#" data-i18n-person>Person</span>
+        <span class="#">Persona non grata</span>
+    </div>
+    <ul class="page-class" id="some-id">
+        <li>
+            <span>Person</span>
+            <p>List Item 0</p>
+            <div>
+                <a href="">
+                    <p>The p link</p>
+                    <div>
+                        <p>The p link inside div</p>
+                    </div>
+                </a>
+            </div>
+        </li>
+        <li data-sly-list-item>List Item 1</li>
+        <li data-sly-list-item>List Item 2</li>
+        <li data-sly-list-item>List Item 3</li>
+        <li data-sly-list-item>List Item 4</li>
+    </ul>
+    <!-- Next step is to replace this ul below -->
+    <ul data-list-authors>
+        <li>SECOND list item 1</li>
+        <li>Second list item 2</li>
+    </ul>
+    <!--    With this ul-->
+    <!--    <ul data-sly-list.author="${test.getAuthors}">-->
+    <!--        <li data-sly-test="${author}">Author: ${author}</li>-->
+    <!--    </ul>-->
+    <a class="Banner" data-dynamic-id="component id"
+       data-dynamic-href="https://developer.mozilla.org/en-US/docs/Glossary/State_machine" data-dynamic-target="_blank">
+        <img data-sly-test="imageReference1" src="#" class="Banner--img" alt="">
+        <strong class="Banner--tag">Banner Pre-Title</strong>
+        <h3 class="Banner--title">Title</h3>
+    </a>
+    <img src="image1.jpg" alt="Image 1"/>
+    <div>
+        <span class="#" data-i18n-test>test</span>
+        <span class="#" data-i18n-purpose>purpose</span>
+        <span class="#" data-i18n-3>3</span>
+        <span class="#" data-i18n-4>4</span>
+        <span class="#" data-i18n-5>5</span>
+        <span class="#" data-i18n-6>6</span>
+        <span class="#" data-i18n-hello>Hello 7</span>
+
+        <p><a href="#">Link 1</a></p>
+        <p><a href="#">Link 2</a></p>
+    </div>
+</div>
+
+<!--<ul class="page-class" id="some-id">
+    <li>
+        <span>Person</span>
+        <p>List Item 0</p>
+        <div>
+            <a href="">
+                <p>The p link</p>
+                <div>
+                    <p>The p link inside div</p>
+                </div>
+            </a>
+        </div>
+    </li>
+    <li data-text-item1>List Item 1</li>
+    <li data-text-item2>List Item 2</li>
+</ul>
+-->

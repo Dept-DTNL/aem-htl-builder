@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="TranslatorTestModel"
+          sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+        <items jcr:primaryType="nt:unstructured">
+            <column
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    
+                    <check
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                        text="check"
+                        name="./check"
+                        uncheckedValue="false"
+                        value="true"
+                                                                        />
+                    
+                    <message
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                        fieldLabel="message"
+                        name="./message"
+                        value="message"
+                                                                        />
+                    
+                    <title
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="title"
+                        name="./title"
+                        value="title"
+                                                                        fieldDescription="This is a description of the field"                        />
+                    
+                    <preTitle1
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="preTitle1"
+                        name="./preTitle1"
+                        value="preTitle1"
+                                                                        />
+                    
+                    <title1
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="title1"
+                        name="./title1"
+                        value="title1"
+                                                                        />
+                    
+                    <preTitle2
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="preTitle2"
+                        name="./preTitle2"
+                        value="preTitle2"
+                                                                        />
+                    
+                    <title2
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="title2"
+                        name="./title2"
+                        value="title2"
+                                                                        />
+                    
+                    
+                    <img1
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                        autoStart="{Boolean}false"
+                        class="cq-droptarget"
+                        fieldLabel="Image"
+                        fileNameParameter="./img1Name"
+                        fileReferenceParameter="./img1Reference"
+                        mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
+                        multiple="{Boolean}false"
+                        name="./img1"
+                        title="Image"
+                        uploadUrl="${suffix.path}"
+                        useHTML5="{Boolean}true"/>
+                    
+                    <img2
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                        autoStart="{Boolean}false"
+                        class="cq-droptarget"
+                        fieldLabel="Image"
+                        fileNameParameter="./img2Name"
+                        fileReferenceParameter="./img2Reference"
+                        mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
+                        multiple="{Boolean}false"
+                        name="./img2"
+                        title="Image"
+                        uploadUrl="${suffix.path}"
+                        useHTML5="{Boolean}true"/>
+                    
+                    
+                    
+                    <cars
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                        fieldLabel="cars"
+                        name="./cars">
+                        <items jcr:primaryType="nt:unstructured">
+                            
+                                <Volvo
+                                 jcr:primaryType="nt:unstructured"
+                                 text="Volvo"
+                                 value="Volvo"/>
+                            
+                                <Saab
+                                 jcr:primaryType="nt:unstructured"
+                                 text="Saab"
+                                 value="Saab"/>
+                            
+                                <Mercedes
+                                 jcr:primaryType="nt:unstructured"
+                                 text="Mercedes"
+                                 value="Mercedes"/>
+                            
+                                <Audi
+                                 jcr:primaryType="nt:unstructured"
+                                 text="Audi"
+                                 value="Audi"/>
+                            
+                        </items>
+                    </cars>
+                                                        </items>
+            </column>
+        </items>
+    </content>
+</jcr:root>

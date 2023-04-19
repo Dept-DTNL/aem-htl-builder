@@ -1,0 +1,16 @@
+<div data-sly-use.banner="nl.dept.aem.edelweiss.core.models.BannerModel"
+     data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
+     data-sly-test.hasContent="${banner.preTitle1 || banner.title1 || banner.preTitle2 || banner.title2}"
+     class="Banners">
+    <a class="Banner" id="${banner.id1}" href="${banner.link1}" target="${banner.checkbox ? '_blank' : '_self'}">
+        <img data-sly-test="${banner.imageReference1}" src="${banner.imageReference1 @ context='uri'}" class="Banner--img" alt="">
+        <strong class="Banner--tag">${banner.preTitle1}</strong>
+        <h3 class="Banner--title">${banner.title1}</h3>
+    </a>
+    <a class="Banner" id="${banner.id2}" data-dynamic-href="${banner.link2}" target="${banner.checkbox2 ? '_blank' : '_self'}">
+        <img data-sly-test="${banner.imageReference2}" src="${banner.imageReference2 @ context='uri'}" class="Banner--img" alt="">
+        <strong class="Banner--tag">${banner.preTitle2}</strong>
+        <h3 class="Banner--title">${banner.title2}</h3>
+    </a>
+</div>
+<sly data-sly-call="${templates.placeholder @ isEmpty=!hasContent}"></sly>
