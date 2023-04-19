@@ -1,0 +1,49 @@
+{
+  "name": "aem-htl-generator",
+  "version": "1.0.62",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "configure": "node bin/scripts/command.js configure",
+    "convert": "node bin/scripts/command.js convert",
+    "templates": "node bin/scripts/command.js templates"
+  },
+  "homepage": "https://github.com/MarkStryjenski/terminal-node-js/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarkStryjenski/terminal-node-js.git"
+  },
+  "keywords": [
+    "AEM",
+    "HTL",
+    "HTML",
+    "Sightly",
+    "Converter",
+    "Component"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/checkbox": "^0.0.30-alpha.0",
+    "app-root-path": "^3.1.0",
+    "cheerio": "^1.0.0-rc.12",
+    "commander": "^10.0.0",
+    "ejs": "^3.1.8",
+    "fs-extra": "^11.1.1",
+    "inquirer": "^9.1.4",
+    "inquirer-directory": "^2.2.0",
+    "inquirer-file-tree-selection-prompt": "^2.0.5",
+    "joi": "^17.9.1",
+    "nanospinner": "^1.1.0",
+    "process": "^0.11.10",
+    "translate": "^1.4.1"
+  },
+  "devDependencies": {
+    "java-parser": "^2.0.3"
+  },
+  "bin": {
+    "aem-htl-generator": "./bin/scripts/command.js"
+  }
+}
