@@ -1,4 +1,5 @@
 import {addTabs, data, inqFile, nameModel} from "./file_helper.js";
+import * as path from "path";
 import {SightlyFileGenerator} from "./builders/SightlyFileGenerator.js";
 import {JavaFileGenerator} from "./builders/JavaFileGenerator.js";
 import {XmlFileGenerator} from "./builders/XmlFileGenerator.js";
@@ -29,8 +30,8 @@ export async function main(configFile) {
             htmlFilePath = getHtmlPath(configFile);
         }
         javaDirectory = configHelper.getJavaDestination();
-        xmlBasicDirectory = configHelper.getDialogDestination() + '\\' + modelName;
-        xmlDialogDirectory = configHelper.getDialogDestination() + '\\' + modelName + '\\_cq_dialog';
+        xmlBasicDirectory = path.join(configHelper.getDialogDestination(), modelName);
+        xmlDialogDirectory = path.join(configHelper.getDialogDestination(), modelName,'_cq_dialog');
         i18nDirectory = configHelper.getI18nDestination();
         componentGroup = configHelper.getProjectField("componentGroup");
         rootPackage = configHelper.getProjectField("rootPackage");
