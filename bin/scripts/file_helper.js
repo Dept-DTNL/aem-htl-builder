@@ -77,13 +77,12 @@ export async function inqFile() {
  * @param modelName
  */
 export async function replaceWithSlyTag($, modelName) {
-    const divTag = $('div').first();
+    const firstElement = $('*').first();
 
     const slyTag = $('<sly>')
         .attr(`data-sly-use.model`, `${data.rootPackage}.models.${data.className}`)
-        .append(divTag.contents());
-    divTag.replaceWith(slyTag);
-
+        .append(firstElement.contents());
+    firstElement.replaceWith(slyTag);
 }
 
 async function hasContent($, modelName) {
