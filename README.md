@@ -104,6 +104,8 @@ Here is a list of all the attributes that are currently supported by the module:
 - ~~select-selectName~~
 - description
 - list-listName
+- i18n-varName
+
 ### 1. textfield-Title
 - HTML:
 ```html
@@ -318,7 +320,37 @@ protected String cars;
     </items>
 </cars>
 ```
-### 7. description
+### 7. i18n-keyName
+- HTML:
+```html
+<div>
+    <span i18n-destination>Destination</span>
+    <span i18n-person>Person</span>
+</div>
+```
+
+- Sightly:
+```html
+<div>
+    <span>${'Destination' @ i18n}</span>
+    <span>${'Person' @ i18n}</span>
+</div>
+```
+
+- en.json:
+```json
+{
+    ...Previous elements,
+    "Destination": "Destination",
+    "Person": "Person"
+}
+```
+
+#### Note
+If there is already in en.json file the key with the same name e.g. 'Person' this example would override
+its value with new one.
+
+### 8. description
 The data-description requires the presence of another 'data-' attribute. 
 To describe the field, the field must exist in the first place.
 - HTML:
