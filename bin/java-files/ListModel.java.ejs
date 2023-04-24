@@ -22,13 +22,26 @@ public class <%= list.ulName.charAt(0).toUpperCase() + list.ulName.slice(1) %>{
     <% } -%>
     <% if(item.link){ -%>
 
-    @ValueMapValue(name="<%= item.link.name %>")
+    @ValueMapValue(name="<%= item.name %>")
     @Inject
-    protected String <%= item.link.name %>;
+    protected String <%= item.name %>;
 
-    @ValueMapValue(name="<%= item.link.name %>")
+    @ValueMapValue(name="<%= item.link.checkBox %>")
     @Inject
     protected Boolean <%= item.link.checkBox %>;
+    <% } -%>
+    <% if(item.richText){ -%>
+
+    @ValueMapValue(name="<%= item.name %>")
+    @Inject
+    protected String <%= item.name %>;
+    <% } -%>
+
+    <% if(item.img){ -%>
+
+    @ValueMapValue(name="<%= item.img.fileReference %>")
+    @Inject
+    protected String <%= item.img.fileReference %>;
     <% } -%>
 <% }) -%>
 

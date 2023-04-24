@@ -46,19 +46,23 @@ async function configure(options) {
         "useAbsolutePath",
         "htmlPath"
     ];
-    // options = {
-    //     projectPath: "D:\\projects\\Graduation-project\\dtnl-edelweiss",
-    //     rootPackage: "nl.dept.aem.edelweiss.core",
-    //     componentParentPath: "edelweiss\\components",
-    //     componentGroup: "Edelweiss - Content",
-    //     i18nPath: "edelweiss\\i18n",
-    //     useAbsolutePath: true,
-    //     htmlPath: "D:\\projects\\Graduation-project\\terminal-node-js\\bin\\front-end\\test.html"
-    //
-    // }
+    // options =
+    //     {
+    //         "project": {
+    //             "projectPath": "C:\\projects\\aem-pizzeria",
+    //             "rootPackage": "pizzeria.project.core",
+    //             "componentParentPath": "pizzeria\\components",
+    //             "componentGroup": "Pizzeria - Content",
+    //             "i18nPath" : "pizzeria\\i18n"
+    //         },
+    //         "html": {
+    //             "useAbsolutePath": true,
+    //             "htmlPath": "D:\\html-files\\test.html"
+    //         },
+    //         "templatesPath" : "ui.content\\src\\main\\content\\jcr_root\\conf\\pizzeria\\settings\\wcm\\templates"
+    //     };
     for (const option of requiredOptions) {
         if (!options[option]) {
-            // console.log("Missing option : " + option);
             missingOptions.push(option);
         }
     }
@@ -95,7 +99,6 @@ async function configure(options) {
             htmlPath: Joi.string().trim(),
         }),
     });
-    // console.log(configuration);
 
     const {error} = configSchema.validate(configuration);
 
@@ -104,7 +107,6 @@ async function configure(options) {
         return;
     }
 
-// Call the saveConfiguration function with the validated configuration
     await saveConfiguration(configuration);
 }
 
@@ -175,7 +177,6 @@ function buildPrompts(missingOptions) {
             validate: input => input.trim() !== '',
             when: () => missingOptions.includes("htmlPath")
         },
-        // ... Add other html fields here
     ];
 }
 
@@ -192,7 +193,7 @@ async function saveConfiguration(configuration) {
 
 // -------------- READING CONFIGURATION --------------
 function getConfigPath() {
-    const configFileName = 'configTest.json';
+    const configFileName = 'configHtlBuilder.json';
     const projectRoot = appRootPath.toString();
     return path.join(projectRoot, configFileName);
 }
@@ -202,7 +203,6 @@ async function convertHtml() {
 
     try {
         const configuration = await fs.readJson(configPath);
-        // console.log(configuration);
         await main(configuration);
     } catch (err) {
         console.error('Error reading configuration:', err);

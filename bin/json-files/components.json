@@ -1,8 +1,8 @@
 {
   "components": {
-    "Banner": {
-      "slingModel": "nl.dept.aem.edelweiss.core.models.BannerModel",
-      "dialog": "edelweiss.components.banner",
+    "Visit": {
+      "slingModel": "nl.dept.aem.pizzeria.core.models.VisitModel",
+      "dialog": "pizzeria.components.banner",
       "fields": [
         {
           "name": "title",
@@ -23,8 +23,8 @@
       ]
     },
     "Portrait": {
-      "slingModel": "nl.dept.aem.edelweiss.core.models.Portrait",
-      "dialog": "edelweiss.components.portrait",
+      "slingModel": "nl.dept.aem.pizzeria.core.models.Portrait",
+      "dialog": "pizzeria.components.portrait",
       "type": "image",
       "placeHolder": "Placeholder",
       "fieldDescription": "Image field",

@@ -1,27 +1,44 @@
-# AEM - Htl - Generator
+# AEM - Htl - Builder
 The goal of this project is to automize the process of translating the html file into sightly
 and generating AEM components. This project is being developed as a part of the IT Graduation project.
 
-Currently the project is non-functional and is under development, therefore more than likely the module won't work upon installation. It has been published for internal testing purposes and because I have no funding to get paid npm subscription :|
+Currently the project is non-functional and is under development, therefore more than likely the module won't work upon installation. It has been published for internal testing purposes.
 
 
 The estimated delivery date of the project is 30th of June 2023.
 
+## License
+This project is licensed under the MIT License - see the LICENSE.txt file for details.
 
 ## Installation
+### First
+Make sure to install as well node.js and npm
 
-Install aem-htl-generator with npm
+**Node.js** :
+1. Project version: 18.12.1
+2. Installation guide: https://nodejs.org/en/download
+
+**Npm**:
+1. Project version: 8.19.2
+2. Installation guide: https://docs.npmjs.com/cli/v8/commands/npm-install
+
+### Next
+Install aem-htl-builder with npm
 
 ```bash
-  npm i aem-htl-generator
+  npm i aem-htl-builder
 ```
+
+### Important !
+If you cloned this repository instead of installing it via npm, to run the scripts go to 
+**package.json** file and run the scripts from there.
 
 
 ## Configuration
 After installing the module, you need to set up a configuration file.
 Run the following command
 ```bash
-  npm aem-htl-generator configure
+  npm aem-htl-builder configure
 ``` 
 You should be presented with prompt in your terminal where you will be asked to configure the module.
 
@@ -35,13 +52,12 @@ Here is an example of valid configuration file:
     "componentParentPath": "pizzeria\\components",
     "componentGroup": "Pizzeria - Content",
     "i18nPath" : "pizzeria\\i18n"
-
   },
   "html": {
     "useAbsolutePath": true,
     "htmlPath": "D:\\html-files\\test.html"
   },
-  "templatesPath" : "ui.content\\src\\main\\content\\jcr_root\\conf\\edelweiss\\settings\\wcm\\templates"
+  "templatesPath" : "ui.content\\src\\main\\content\\jcr_root\\conf\\pizzeria\\settings\\wcm\\templates"
 }
 ```
 
@@ -59,7 +75,7 @@ And below is the  detailed description of what each field does:
 ### Note
 You can also set-up configuration by simply running the script with already specified parameters (example below):
 ```bash
-aem-htl-generator configure \
+aem-htl-builder configure \
 --projectPath="C:\projects\aem-pizzeria" \
 --rootPackage="pizzeria.project.core" \
 --componentParentPath="pizzeria\\components" \
@@ -72,7 +88,7 @@ aem-htl-generator configure \
 After successfully setting up configuration, 
 Run the following command to convert html file into Sightly
 ```bash
-  npm aem-htl-generator convert
+  npm aem-htl-builder convert
 ```
 
 ## Syntax
@@ -80,18 +96,18 @@ In the list below I present the required attribute HTML syntax for each of the a
 and the corresponding **Sightly**, **Sling Model** and **XML Dialog** output.
 
 Here is a list of all the attributes that are currently supported by the module:
-- data-textfield-textFieldName
-- data-textarea-textAreaName
-- data-checkbox-checkName
-- data-link-linkName
-- data-img-imgReference
-- data-select-selectName
-- data-description
-- data-list-listName
-### 1. data-textfield-Title
+- textfield-textFieldName
+- textarea-textAreaName
+- checkbox-checkName
+- link-linkName
+- img-imgReference
+- ~~select-selectName~~
+- description
+- list-listName
+### 1. textfield-Title
 - HTML:
 ```html
-<p data-textfield-title> John </p>
+<p textfield-title> John </p>
 ```
 
 - Sightly:
@@ -115,10 +131,10 @@ protected String title;
     value="title"/>
 ```
 
-### 2. data-textarea-message
+### 2. textarea-message
 - HTML:
 ```html
-<p data-textarea-message>Lorem Ipsum is simply dummy text of the printing and
+<p textarea-message>Lorem Ipsum is simply dummy text of the printing and
     typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
     when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
 ```
@@ -143,10 +159,10 @@ protected String message;
     name="./message"
     value="message"/>
 ```
-### 3. data-checkbox-check
+### 3. checkbox-check
 - HTML:
 ```html
-<div data-checkbox-check>
+<div checkbox-check>
     <p>Species: Human</p>
 </div>
 ```
@@ -174,11 +190,11 @@ protected boolean check;
     uncheckedValue="false"
     value="true"/>
 ```
-### 4. data-link-linkName
+### 4. link-linkName
 - HTML:
 ```html
-<a data-link-link1 class="Banner" href="www.webTest.com">
-    <strong data-textfield-preTitle1 class="Banner--tag">Banner PreTitle</strong>
+<a link-link1 class="Banner" href="www.webTest.com">
+    <strong textfield-preTitle1 class="Banner--tag">Banner PreTitle</strong>
 </a>
 ```
 
@@ -214,10 +230,10 @@ protected Boolean link1Checkbox;
     required="{Boolean}false"
     rootPath="/content"/>
 ```
-### 5. data-img-imgName
+### 5. img-imgName
 - HTML:
 ```html
-<img data-img-img1 class="Banner--img" src="/dummy//svg/1.svg" alt=""/>
+<img img-img1 class="Banner--img" src="/dummy//svg/1.svg" alt=""/>
 ```
 
 - Sightly:
@@ -248,8 +264,8 @@ protected String img1Reference;
     uploadUrl="${suffix.path}"
     useHTML5="{Boolean}true"/>
 ```
-### 6. data-select-cars
-- HTML:
+### 6. ~~data-select-cars~~ (As of right now non functional)
+- ~~HTML:~~
 ```html
 <select data-select-cars name="cars" id="cars">
     <option value="volvo">Volvo</option>
@@ -259,18 +275,18 @@ protected String img1Reference;
 </select>
 ```
 
-- Sightly:
+- ~~Sightly:~~
 ```html
 <p>${model.cars}</p>
 ```
 
-- Sling Model:
+- ~~Sling Model:~~
 ```java
 @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
 protected String cars;
 ```
 
-- XML Dialog:
+- ~~XML Dialog:~~
 ```xml
 <cars
     jcr:primaryType="nt:unstructured"
@@ -302,12 +318,12 @@ protected String cars;
     </items>
 </cars>
 ```
-### 7. data-description
+### 7. description
 The data-description requires the presence of another 'data-' attribute. 
 To describe the field, the field must exist in the first place.
 - HTML:
 ```html
-<p data-textfield-title data-description="This field defines the firstName">John</p>
+<p textfield-title description="This field defines the firstName">John</p>
 ```
 
 - Sightly:
@@ -325,30 +341,67 @@ To describe the field, the field must exist in the first place.
     value="title"
     fieldDescription="This field defined the firstName"/>
 ```
-### 8. data-list-listName
+### 8. list-listName
 The module automatically detects and parses all the `<ul>` list occurances. However, the user still needs to define the list name. If the data-list is missing in the `<ul>` the default list name will be assigned.
 
 Furthermore, under newly created list in Sightly, there will be commented original list.
 - HTML:
 ```html
-    <ul data-list-aws>
-        <li>Label 1</li>
-        <li>Label 2</li>
-    </ul>
+<ul list-aws class="Pizza--list">
+    <li class="Pizza">
+        <div>
+            <h3 textfield-title class="title">Margarita</h3>
+            <p class="preTitle">Pizza</p>
+        </div>
+        <p textarea-text class="text">Tomato sauce and cheese.</p>
+        <a link-pizzaLink href="" class="Post--link link">www.website.com/en/pizzeria/pizzas/</a>
+    </li>
+    <li>
+        <img img-pizzaImg class="Pizza--img" src="/dummy//svg/2.svg" alt="">
+    </li>
+</ul>
 ```
 
 - Sightly:
 ```html
-    <ul data-sly-list.awsModel="${model.awsModel}">
-        <li data-sly-test="${awsModel.label}">Item: ${awsModel.label}</li>
-    </ul>
+    <ul class="Pizza--list" data-sly-list.awsModel="${model.awsModel}">
+    <li class="Pizza" id="someId">
+        <h3 class="title">${awsModel.title}</h3>
+        <p class="text">${awsModel.text}</p>
+        <a href="${awsModel.pizzaLink}" class="Post--link link"
+           target="${awsModel.pizzaLinkCheckbox ? '_blank' : '_self'}">www.website.com/en/pizzeria/pizzas/</a>
+        <img class="Pizza--img" src="${awsModel.pizzaImgReference @ context='uri'}" alt=""
+             data-sly-test="${awsModel.pizzaImgReference}"/>
+    </li>
+</ul>
 ```
 
 - Sling Model:
 ```java
-@ChildResource(name="awsModel", injectionStrategy = InjectionStrategy.OPTIONAL)
-@Inject
-protected List<AwsModel> awsModel;
+@Getter
+@Model(adaptables = Resource.class, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+public class AwsModel{
+    
+    @ValueMapValue(name="title")
+    @Inject
+    protected String title;
+              
+    @ValueMapValue(name="text")
+    @Inject
+    protected String text;
+                 
+    @ValueMapValue(name="pizzaLink")
+    @Inject
+    protected String pizzaLink;
+
+    @ValueMapValue(name="pizzaLinkCheckbox")
+    @Inject
+    protected Boolean pizzaLinkCheckbox;
+        
+    @ValueMapValue(name="pizzaImgReference")
+    @Inject
+    protected String pizzaImgReference;
+}
 ```
 
 - New Sling Model for list:
@@ -356,15 +409,32 @@ protected List<AwsModel> awsModel;
 @Getter
 @Model(adaptables = Resource.class, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class AwsModel{
-    @ValueMapValue(name="label")
+    
+    @ValueMapValue(name="title")
     @Inject
-    protected String label;
+    protected String title;
+              
+    @ValueMapValue(name="text")
+    @Inject
+    protected String text;
+                 
+    @ValueMapValue(name="pizzaLink")
+    @Inject
+    protected String pizzaLink;
+
+    @ValueMapValue(name="pizzaLinkCheckbox")
+    @Inject
+    protected Boolean pizzaLinkCheckbox;
+        
+    @ValueMapValue(name="pizzaImgReference")
+    @Inject
+    protected String pizzaImgReference;
 }
 ```
 
 - XML Dialog:
 ```xml
-<list
+<awsModelList
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
         fieldLabel="awsModel"
@@ -373,13 +443,51 @@ public class AwsModel{
            sling:resourceType="granite/ui/components/coral/foundation/container"
            name="./awsModel">
         <items jcr:primaryType="nt:unstructured">
-            <itemLabel
+            <title
                     jcr:primaryType="nt:unstructured"
-                    fieldLabel="Item label"
-                    name="./label"
                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                    value="Default value"/>
+                    fieldLabel="title"
+                    name="./title"/>
+            <text
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                    fieldLabel="text"
+                    name="./text"/>
+            <pizzaLinkContainer
+                    jcr:primaryType="nt:unstructured"
+                    jcr:title="pizzaLink Container"
+                    sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                <items jcr:primaryType="nt:unstructured">
+                    <pizzaLinkCheckbox
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/foundation/form/checkbox"
+                            text="Open link in another tab."
+                            name="./pizzaLinkCheckbox"
+                            value="true"/>
+                    <pizzaLink
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                            fieldLabel="pizzaLink"
+                            name="./pizzaLink"
+                            required="{Boolean}false"
+                            rootPath="/content"/>
+                </items>
+            </pizzaLinkContainer>
+            <pizzaImg
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                    autoStart="{Boolean}false"
+                    class="cq-droptarget"
+                    fieldLabel="Image"
+                    fileNameParameter="./pizzaImgName"
+                    fileReferenceParameter="./pizzaImgReference"
+                    mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
+                    multiple="{Boolean}false"
+                    name="./pizzaImg"
+                    title="Image"
+                    uploadUrl="${suffix.path}"
+                    useHTML5="{Boolean}true"/>
         </items>
     </field>
-</list>
+</awsModelList>
 ```

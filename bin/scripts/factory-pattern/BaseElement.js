@@ -2,7 +2,7 @@ import {data} from "../file_helper.js";
 
 let checkBoxNames = [];
 /**
- * This varaible is used to store the i18n elements
+ * This variable is used to store the i18n elements
  * To check later if the element is already present in the json file
  * @type {{}}
  */
@@ -15,7 +15,8 @@ class BaseElement {
         this.attrName = attrName;
         this.variableName = null;
         this.description = null;
-        this.isListElement = false;
+        this.listName = null;
+        this.customElement = false;
     }
 
     async process() {
@@ -45,11 +46,12 @@ class TextFieldElement extends BaseElement {
     }
 
     async process() {
-        this.variableName = this.isListElement ? this.attrName.slice(10) : this.attrName.slice(15);
-        let tagValue = "${model." + this.variableName + "}";
+        this.variableName = this.attrName.slice(10);
+        let modelName = this.listName ? this.listName : 'model';
+        let tagValue = "${"+modelName+"." + this.variableName + "}";
         this.$(this.el).text(tagValue);
         this.$(this.el).removeAttr(this.attrName);
-        console.log('Processing TextFieldElement');
+        // console.log('Processing TextFieldElement');
         // return Promise.resolve({attrName: 'textField', variableName: this.variableName});
     }
 
@@ -71,7 +73,8 @@ class TextFieldElement extends BaseElement {
             name: this.variableName,
             javaType: "String",
             resourceType: "textfield",
-            description: this.description
+            description: this.description,
+            element : this.$(this.el)
         };
     }
 
@@ -83,11 +86,12 @@ class TextAreaElement extends BaseElement {
     }
 
     async process() {
-        this.variableName = this.isListElement ? this.attrName.slice(9) : this.attrName.slice(14);
-        let tagValue = "${model." + this.variableName + "}";
+        this.variableName =this.attrName.slice(9);
+        let modelName = this.listName ? this.listName : 'model';
+        let tagValue = "${"+modelName+"." + this.variableName + "}";
         this.$(this.el).text(tagValue);
         this.$(this.el).removeAttr(this.attrName);
-        console.log('Processing TextAreaElement');
+        // console.log('Processing TextAreaElement');
     }
 
     pushData() {
@@ -108,7 +112,8 @@ class TextAreaElement extends BaseElement {
             name: this.variableName,
             javaType: "String",
             resourceType: "textarea",
-            description: this.description
+            description: this.description,
+            element : this.$(this.el)
         };
     }
 }
@@ -119,11 +124,11 @@ class CheckBoxElement extends BaseElement {
     }
 
     async process() {
-        this.variableName = this.isListElement ? this.attrName.slice(10) : this.attrName.slice(14);
-        // let tagValue = "${model." + variableName + "}";
-        this.$(this.el).attr('data-sly-test', "${" + `model.${this.variableName}` + "}");
+        this.variableName = this.attrName.slice(9);
+        let modelName = this.listName ? this.listName : 'model';
+        this.$(this.el).attr('data-sly-test', "${" + modelName+`.${this.variableName}` + "}");
         this.$(this.el).removeAttr(this.attrName);
-        console.log('Processing CheckBox');
+        // console.log('Processing CheckBox');
     }
 
     pushData() {
@@ -132,6 +137,7 @@ class CheckBoxElement extends BaseElement {
                 name: this.variableName,
                 javaType: "boolean",
                 resourceType: "checkbox",
+                description: this.description
             })
             checkBoxNames.push(this.variableName);
         }
@@ -142,7 +148,8 @@ class CheckBoxElement extends BaseElement {
             name: this.variableName,
             javaType: "boolean",
             resourceType: "checkbox",
-            description: this.description
+            description: this.description,
+            element : this.$(this.el)
         };
     }
 }
@@ -154,11 +161,12 @@ class LinkElement extends BaseElement {
     }
 
     async process() {
-        this.variableName = this.isListElement ? this.attrName.slice(5) : this.attrName.slice(10);
+        this.variableName = this.attrName.slice(5);
         let checkBoxName = this.variableName + "Checkbox";
 
-        this.$(this.el).attr('href', "${" + `model.${this.variableName}` + "}");
-        this.$(this.el).attr('target', "${" + `model.${checkBoxName} ? '_blank' : '_self'` + "}");
+        let modelName = this.listName ? this.listName : 'model';
+        this.$(this.el).attr('href', "${" + modelName + `.${this.variableName}` + "}");
+        this.$(this.el).attr('target', "${" + modelName + `.${checkBoxName} ? '_blank' : '_self'` + "}");
         this.$(this.el).removeAttr(this.attrName);
         // TODO: Make sure that sending null value of checkbox is not a problem for dialog and sling model
         this.checkBoxName = checkBoxName;
@@ -175,20 +183,65 @@ class LinkElement extends BaseElement {
                 description: this.description,
             })
         } else {
-            console.log('Link already exists: ' + this.variableName);
+            console.log('You already used: ' + this.variableName + ' as an Link name');
         }
     }
 
     getListElement() {
         return {
+            name: this.variableName,
             link: {
                 name: this.variableName,
                 checkBox: this.checkBoxName,
                 description: this.description,
-            }
+            },
+            element : this.$(this.el)
         };
     }
 }
+
+class ImgElement extends BaseElement {
+    constructor($, el, attrName) {
+        super($, el, attrName);
+        this.checkBoxName = null;
+    }
+
+    async process() {
+        this.variableName = this.attrName.slice(4);
+        let modelName = this.listName ? this.listName : 'model';
+
+        this.$(this.el).attr('data-sly-test', "${" + modelName + `.${this.variableName}` + "Reference}");
+        this.$(this.el).attr('src', "${" + modelName + `.${this.variableName}Reference @ context='uri'` + "}");
+        this.$(this.el).removeAttr(this.attrName);
+    }
+
+    pushData() {
+        if (!data.images.map(img => img.name).includes(this.variableName)) {
+            data.images.push({
+                name: this.variableName,
+                fileName: this.variableName + 'Name',
+                fileReference: this.variableName + 'Reference',
+                description: this.description
+            })
+        } else {
+            console.log('You already used: ' + this.variableName + ' as an image name');
+        }
+    }
+
+    getListElement() {
+        return {
+            name: this.variableName,
+            img: {
+                name: this.variableName,
+                fileName: this.variableName + 'Name',
+                fileReference: this.variableName + 'Reference',
+                description: this.description,
+            },
+            element : this.$(this.el)
+        };
+    }
+}
+
 
 class RichTextElement extends BaseElement {
     constructor($, el, attrName) {
@@ -196,16 +249,16 @@ class RichTextElement extends BaseElement {
     }
 
     async process() {
-        console.log('Processing RichTextElement');
+        // console.log('Processing RichTextElement');
+        this.variableName =this.attrName.slice(9);
 
+        let modelName = this.listName ? this.listName : 'model';
+        let tagValue = "${"+modelName+"." + this.variableName + " @ context='html'}";
         //Add the original content as a comment
         let originalContent = this.$(this.el).prop('outerHTML');
         let commentContent = `\n <!-- RichText original content:-->\n` + `<!-- ${originalContent} -->\n`;
         this.$(this.el).after(`${commentContent}`);
 
-        this.variableName = this.isListElement ? this.attrName.slice(9) : this.attrName.slice(14);
-
-        let tagValue = "${model." + this.variableName + " @ context='html'}";
         this.$(this.el).text(tagValue);
         this.$(this.el).removeAttr(this.attrName);
     }
@@ -223,10 +276,12 @@ class RichTextElement extends BaseElement {
 
     getListElement() {
         return {
-            richTexts: {
+            name: this.variableName,
+            richText: {
                 name: this.variableName,
                 description: this.description,
-            }
+            },
+            element : this.$(this.el)
         };
     }
 }
@@ -239,7 +294,7 @@ class I18nElement extends BaseElement {
 
     async process() {
         // TODO: Read the json file and check if the key already exists
-        this.variableName = this.isListElement ? this.attrName.slice(5) : this.attrName.slice(10);
+        this.variableName = this.attrName.slice(5);
 
         this.variableName = this.variableName.charAt(0).toUpperCase() + this.variableName.slice(1);
         this.value = this.$(this.el).text();
@@ -252,6 +307,16 @@ class I18nElement extends BaseElement {
         if (!i18nElements.hasOwnProperty(this.variableName)) {
             i18nElements[this.variableName] = this.value;
         }
+    }
+
+    getListElement() {
+        if (!i18nElements.hasOwnProperty(this.variableName)) {
+            i18nElements[this.variableName] = this.value;
+        }
+        return {
+            name: this.variableName,
+            element : this.$(this.el)
+        };
     }
 }
 
@@ -268,24 +333,33 @@ export class ElementFactory {
         let element = new BaseElement();
         for (const attr of this.attributes) {
             const attrName = attr.name;
-            if (attrName.startsWith('data-textfield-')) {
+            if (attrName.startsWith('textfield-')) {
                 element = new TextFieldElement(this.$, this.el, attrName);
-            } else if (attrName.startsWith('data-textarea-')) {
+                element.customElement = true;
+            } else if (attrName.startsWith('textarea-')) {
                 element = new TextAreaElement(this.$, this.el, attrName);
-            } else if (attrName.startsWith('data-checkbox-')) {
+                element.customElement = true;
+            } else if (attrName.startsWith('checkbox-')) {
                 element = new CheckBoxElement(this.$, this.el, attrName);
-            } else if (attrName.startsWith('data-link-')) {
+                element.customElement = true;
+            } else if (attrName.startsWith('link-')) {
                 element = new LinkElement(this.$, this.el, attrName);
-            } else if (attrName.startsWith('data-i18n-')) {
+                element.customElement = true;
+            } else if (attrName.startsWith('img-')) {
+                element = new ImgElement(this.$, this.el, attrName);
+                element.customElement = true;
+            } else if (attrName.startsWith('i18n-')) {
                 element = new I18nElement(this.$, this.el, attrName);
-            } else if (attrName.startsWith('data-richtext-')) {
+                element.customElement = true;
+            } else if (attrName.startsWith('richtext-')) {
                 element = new RichTextElement(this.$, this.el, attrName);
+                element.customElement = true;
             }
-            if (attrName.startsWith('data-description')) {
+            if (attrName.startsWith('description')) {
                 description = attr.value;
                 this.$(this.el).removeAttr(attrName);
             }
-            if (element.el != null && attr.name.startsWith('data-')) {
+            if (element.el != null && element.customElement) {
                 await element.process();
             }
         }
@@ -296,38 +370,42 @@ export class ElementFactory {
         return element;
     }
 
-    async convertList() {
+    async convertList(listName) {
         let description;
         let element = new BaseElement();
+        if (listName == null || listName === '') {
+            // listName = 'default';
+            return null;
+        }
         for (const attr of this.attributes) {
             const objectName = attr.name;
             if (objectName.startsWith('textfield-')) {
                 element = new TextFieldElement(this.$, this.el, objectName);
-                element.isListElement = true;
+                element.listName = listName;
             } else if (objectName.startsWith('textarea-')) {
                 element = new TextAreaElement(this.$, this.el, objectName);
-                element.isListElement = true;
+                element.listName = listName;
             } else if (objectName.startsWith('checkbox-')) {
                 element = new CheckBoxElement(this.$, this.el, objectName);
-                element.isListElement = true;
-
+                element.listName = listName;
             } else if (objectName.startsWith('link-')) {
                 element = new LinkElement(this.$, this.el, objectName);
-                element.isListElement = true;
-
-            } else if (objectName.startsWith('i18n-')) {
+                element.listName = listName;
+            } else if (objectName.startsWith('img-')) {
+                element = new ImgElement(this.$, this.el, objectName);
+                element.listName = listName;
+            }   else if (objectName.startsWith('i18n-')) {
                 element = new I18nElement(this.$, this.el, objectName);
-                element.isListElement = true;
-
+                element.listName = listName;
             } else if (objectName.startsWith('richtext-')) {
                 element = new RichTextElement(this.$, this.el, objectName);
-                element.isListElement = true;
+                element.listName = listName;
             }
             if (objectName.startsWith('description')) {
                 description = this.attr.value;
                 this.$(this.el).removeAttr(objectName);
             }
-            if (element.el != null && element.isListElement) {
+            if (element.el != null && (element.listName != null && element.listName !== 'default' && element.listName !== '')) {
                 await element.process();
                 element.hasDescription(description);
                 return element.getListElement();

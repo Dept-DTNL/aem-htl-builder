@@ -2,7 +2,6 @@ import {FileGenerator} from "./FileGenerator.js";
 import * as fs from "fs";
 import * as cheerio from "cheerio";
 import {
-    imageGenerator,
     replaceWithSlyTag,
     selectFinder,
     translateDynamicElements
@@ -28,7 +27,7 @@ export class SightlyFileGenerator extends FileGenerator {
         await replaceWithSlyTag($, modelName);
         await translateDynamicElements($);
         await selectFinder($);
-        await imageGenerator($)
+        // await imageGenerator($);
         // await hasContent($, modelName);
 
         //Remove the empty lines using regex expression

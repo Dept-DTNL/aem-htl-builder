@@ -11,8 +11,6 @@ import {JsonGenerator} from "./builders/JsonGenerator.js";
 export async function main(configFile) {
     if (configFile) {
         let useHtmlAbsolutePath = getUseHtmlAbsoluteFile(configFile);
-        //TODO: Make this scalable by generating builder for json files
-        // export let i18nFile = await readI18nJsonFile();
         let htmlFilePath;
         let javaDirectory;
         let xmlDialogDirectory;
@@ -70,10 +68,10 @@ export async function main(configFile) {
         console.error("No config file found");
     }
 
-    // javaDirectory = path.resolve(process.cwd(), '../../../core/src/main/java/nl/dept/aem/edelweiss/core/models');
-    // xmlBasicDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/edelweiss/components/${modelName}`);
-    // xmlDialogDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/edelweiss/components/${modelName}/_cq_dialog`);
-    // i18nDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/edelweiss/i18n`);
+    // javaDirectory = path.resolve(process.cwd(), '../../../core/src/main/java/nl/dept/aem/pizzeria/core/models');
+    // xmlBasicDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/pizzeria/components/${modelName}`);
+    // xmlDialogDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/pizzeria/components/${modelName}/_cq_dialog`);
+    // i18nDirectory = path.resolve(process.cwd(), `../../../ui.apps/src/main/content/jcr_root/apps/pizzeria/i18n`);
 
 }
 

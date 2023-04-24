@@ -1,5 +1,4 @@
 import fs from "fs";
-import {i18nElements} from "../factory-pattern/BaseElement.js";
 
 async function printFields() {
     let jsonData = await readJsonFile('D:\\projects\\Graduation-project\\terminal-node-js\\bin\\json-files\\components.json');

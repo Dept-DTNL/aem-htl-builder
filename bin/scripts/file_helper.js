@@ -2,12 +2,8 @@ import * as fs from "fs";
 import inquirer from "inquirer";
 import inquirerFileTreeSelection from "inquirer-file-tree-selection-prompt";
 import * as path from "path";
-import process from "process";
-import translate from "translate";
 import {ElementFactory} from "./factory-pattern/BaseElement.js";
 
-translate.engine = "google"; // Or "yandex", "libre", "deepl"
-translate.key = process.env.GOOGLE_KEY;
 let className = 'DefaultModelName';
 let componentGroup = 'Example - Component Group';
 let rootPackage = 'root.package.example';
@@ -81,20 +77,13 @@ export async function inqFile() {
  * @param modelName
  */
 export async function replaceWithSlyTag($, modelName) {
-    //Solution 1 - Find the first div tag and replace it with a new <sly> tag
-    // Select the first <div> tag and create a new <sly> tag with the same content
     const divTag = $('div').first();
 
     const slyTag = $('<sly>')
         .attr(`data-sly-use.model`, `${data.rootPackage}.models.${data.className}`)
         .append(divTag.contents());
-    // Replace the first <div> tag with the new <sly> tag
     divTag.replaceWith(slyTag);
 
-    //Solution 2 - Find the first div tag and add the sly attributes to it
-    // divTag.attr({
-    //     [`data-sly-use.${modelName}`] : `nl.dept.aem.edelweiss.core.models.${data.className}`,
-    // });
 }
 
 async function hasContent($, modelName) {
@@ -132,26 +121,41 @@ async function hasContent($, modelName) {
 
 export async function translateDynamicElements($) {
     const listsData = {};
+    let listDescription;
 
     $('ul, ol').filter((_, el) => {
-        return Object.keys($(el).attr()).some(attrName => attrName.startsWith('data-list-'));
+        return Object.keys($(el).attr()).some(attrName => attrName.startsWith('list-'));
     }).each(function (index) {
         const listId = `list-${index}`;
         $(this).attr('data-list-id', listId);
 
-        let ulAttrName = Object.keys($(this).attr())
-            .find(attrName => attrName.startsWith('data-list-'))
-            ?.slice('data-list-'.length);
+        let originalUlAttrName = Object.keys($(this).attr())
+            .find(attrName => attrName.startsWith('list-'))
+            ?.slice('list-'.length);
+
+        if(this.attribs.description!=null){
+            listDescription=this.attribs.description;
+            $(this).removeAttr('description');
+        }
+
+        let ulAttrName = originalUlAttrName + 'Model';
 
         // If there is no attribute that starts with data-list-, then add the default attribute
         if (!ulAttrName) {
             ulAttrName = 'default';
         }
+        $(this).attr(`data-sly-list.${ulAttrName}`, "${" + `model.` + `${ulAttrName}` + "}");
+        $(this).removeAttr(`list-${originalUlAttrName}`);
 
         listsData[listId] = {
-            ulName: ulAttrName + "Model",
-            liItems: []
+            ulName: ulAttrName,
+            liItems: [],
+            description:listDescription
         };
+        const originalListHTML = $(this).clone().wrap('<div>').parent().html();
+        const commentContent = `\n <!-- List original content:-->\n` + `<!-- ${originalListHTML} -->\n`;
+        $(this).after(`${commentContent}`);
+
     });
 
     const allPromises = [];
@@ -165,81 +169,62 @@ export async function translateDynamicElements($) {
 
         if (listAncestors.length > 0) {
             const listId = listAncestors.attr('data-list-id');
-            console.log(`This element belongs to a list with ID: ${listId}`, currentElement[0].tagName);
 
-            const itemPromise = elementFactory.convertList().then((item) => {
-                if (item != null) {
+            let listName = listsData[listId].ulName;
+            // Create new list using cheerio
+            // Add all the elements into that list
+            const itemPromise = elementFactory.convertList(listName).then((item) => {
+                //Check if item is null and if item name is not already in the array
+                if (item != null && !listsData[listId].liItems.some(el => el.name === item.name)) {
                     listsData[listId].liItems.push(item);
                 }
             });
 
             allPromises.push(itemPromise);
         } else {
-            console.log('This element does not belong to a list:', currentElement[0].tagName);
             const attrPromise = elementFactory.convertAttributes();
             allPromises.push(attrPromise);
         }
     });
 
     // Wait for all the promises to complete before logging the liArray
-    Promise.all(allPromises).then(() => {
-        $('ul[data-list-id], ol[data-list-id]').each(function() {
-            // Wrap the original list with an HTML comment
-            const originalListHTML = $(this).clone().wrap('<div>').parent().html();
-            const commentContent = `\n <!-- List original content:-->\n` + `<!-- ${originalListHTML} -->\n`;
-
-            // Insert the commented original list after the original list
-            $(this).after(`${commentContent}`);
-        });
-        // Remove the flag from all the list elements
-        $('ul, ol').removeAttr('data-list-id');
+    return Promise.all(allPromises).then(() => {
         for (const listId in listsData) {
             data.lists.push(listsData[listId]);
         }
+        $('ul[data-list-id], ol[data-list-id]').each(function() {
+            for (const listId in listsData) {
+                // data.lists.push(listsData[listId]);
+                if(this.attribs["data-list-id"] === listId){
+                    let liCount = 0;
+                    const newUl = $('<ul></ul>');
+                    const newLi = $('<li></li>');
+                    for (let child of this.children){
+                        if(child.name==="li" && liCount === 0){
+                            newLi.attr(child.attribs);
+                            liCount++;
+                        }
+                    }
 
-        console.log(data.lists);
+                    for(const item of listsData[listId].liItems) {
+                        if(item.element != null){
+                            newLi.append(item.element);
+                            newLi.append('\n');
+                        }
+                    }
+                    newUl.append(newLi);
+                    newUl.append('\n');
+                    newUl.attr(this.attribs);
+                    $(this).replaceWith(newUl);
+                }
+            }
+        });
+        // Remove the flag from all the list elements
+        $('ul, ol').removeAttr('data-list-id');
+        return $.html();
     });
 }
 
-export async function imageGenerator($) {
-    try {
-        await $('img').each(async (i, img) => {
-            //Find the attribute that starts with data-list-
-            //And remove the data-list- part
-            let imgOriginalAttribute = Object.keys($(img).attr())
-                .find(attrName => attrName.startsWith('data-img-'));
-            if (imgOriginalAttribute != null) {
-                let imgAttrNameSlice = imgOriginalAttribute?.slice('data-img-'.length);
-                if (!imgAttrNameSlice) {
-                    imgAttrNameSlice = 'default';
-                }
-                let imgFileName = imgAttrNameSlice + "Name";
-                let imgFileReference = imgAttrNameSlice + "Reference";
-
-                //If there is no attribute that starts with data-list- then add the default attribute
-                $(img).attr('data-sly-test', "${" + `model.${imgFileReference}` + "}");
-                $(img).attr('src', "${" + `model.${imgFileReference} @ context='uri'` + "}");
-
-                //Add the original content as a comment
-                // let originalContent = $(img).prop('outerHTML');
-                // let commentContent = `\n <!-- Original content:-->\n` + `<!-- ${originalContent} -->\n`;
-                // $(img).after(`${commentContent}`);
-
-                //Remove the original attribute
-                $(img).removeAttr(imgOriginalAttribute);
-
-                data.images.push({
-                    name: imgAttrNameSlice,
-                    fileName: imgFileName,
-                    fileReference: imgFileReference,
-                })
-            }
-        });
-        return $.html();
-    } catch (e) {
-        console.error(e);
-    }
-}
 
 export async function selectFinder($) {
     try {
@@ -343,11 +328,3 @@ export async function addTabs() {
         }
     });
 }
-
-// await addTabs();
-// console.log(data.tabs);
-
-//Sling model link for banner
-//https://bitbucket.org/tamtam-nl/dtnl-edelweiss/src/master/core/src/main/java/nl/dept/aem/edelweiss/core/models/BannerModel.java
-// Xml link for banner
-//https://bitbucket.org/tamtam-nl/dtnl-edelweiss/src/master/ui.apps/src/main/content/jcr_root/apps/edelweiss/components/banner/_cq_dialog/.content.xml

@@ -45,6 +45,6 @@ async function promptTemplateName(){
     });
 }
 
-// const configuration = await fs.readJson('D:\\projects\\Graduation-project\\terminal-node-js\\configTest.json');
+// const configuration = await fs.readJson('D:\\projects\\Graduation-project\\terminal-node-js\\configHtlBuilder.json');
 // await templateGenerator(configuration);
 // thumbnailGenerator();
