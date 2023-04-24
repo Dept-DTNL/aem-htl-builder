@@ -46,8 +46,9 @@ function isItDirectory(filePath) {
     return fs.lstatSync(filePath).isDirectory();
 }
 
-export async function inqFile() {
-    inquirer.registerPrompt('file-tree-selection', inquirerFileTreeSelection)
+export async function inqFile(htmlDirPath) {
+    process.chdir(htmlDirPath);
+    inquirer.registerPrompt('file-tree-selection', inquirerFileTreeSelection);
     const answer = await inquirer.prompt({
         type: 'file-tree-selection',
         name: 'file',

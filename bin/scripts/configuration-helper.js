@@ -74,6 +74,7 @@ export class ConfigurationHelper {
     constructor(configData) {
         this.configData = configData;
         this.projectPath = this.getProjectPath("projectPath");
+        this.uiAppsPath = this.getUiApps();
     }
 
     getProjectPath() {
@@ -81,7 +82,7 @@ export class ConfigurationHelper {
         if (!configData.project) {
             throw new Error(`No project path is defined in the configuration file`);
         }
-        return checkIfPathExists(configData.project.projectPath);
+        return checkIfPathExists(configData.project.projectPath,'projectPath');
     }
 
     getJavaDestination() {
@@ -89,16 +90,27 @@ export class ConfigurationHelper {
         if (this.projectPath && rootPackage) {
             let rootPackageSlashes = rootPackage.replace(/\./g, path.sep);
             return checkIfPathExists(
-                path.join(this.projectPath, 'core', 'src', 'main', 'java', rootPackageSlashes, 'models')
+                path.join(this.projectPath, 'core', 'src', 'main', 'java', rootPackageSlashes, 'models'),
+                'rootPackage'
             );
         }
     }
 
     getDialogDestination() {
-        let componentParentPath = this.getProjectField("componentParentPath");
-        if (this.projectPath && componentParentPath) {
+        if (this.projectPath && this.uiAppsPath) {
             return checkIfPathExists(
-                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', componentParentPath)
+                path.join(this.getUiApps(),'components'),
+                'componentParentPath'
+            );
+        }
+    }
+
+    getUiApps(){
+        let uiAppsName = this.getProjectField("uiAppsName");
+        if (this.projectPath && uiAppsName) {
+            return checkIfPathExists(
+                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', uiAppsName),
+                'uiAppsName'
             );
         }
     }
@@ -130,19 +142,21 @@ export class ConfigurationHelper {
     }
 
     getI18nDestination() {
-        let i18nPath = this.getProjectField("i18nPath", true);
-        if (this.projectPath && i18nPath) {
+        if (this.projectPath && this.uiAppsPath) {
             return checkIfPathExists(
-                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', i18nPath)
+                path.join(this.getUiApps(),'i18n'),
+                'i18nPath'
             );
         }
     }
 
     getTemplatesDirectory() {
-        let templatesDirectory = this.configData.templatesPath;
-        if (this.projectPath && templatesDirectory) {
+        let uiAppsName = this.getProjectField("uiAppsName");
+        if (this.projectPath && uiAppsName) {
             return checkIfPathExists(
-                path.join(this.projectPath, templatesDirectory)
+                path.join(this.projectPath, 'ui.content', 'src', 'main', 'content','jcr_root','conf', uiAppsName,
+                    'settings', 'wcm','templates'),
+                'templatesPath'
             );
         }
     }
@@ -166,15 +180,20 @@ export function getUseHtmlAbsoluteFile(configData) {
 
 export function getHtmlPath(configData) {
     const field = configData.html["htmlPath"];
-    return checkIfPathExists(field);
+    return checkIfPathExists(field,'htmlPath');
 }
 
-export function checkIfPathExists(pathValue) {
+export function getHtmlDirectoryPath(configData,){
+    const directory = configData.html["dirContainingHtmlFiles"];
+    return checkIfPathExists(directory,'dirContainingHtmlFiles');
+}
+
+export function checkIfPathExists(pathValue,keyName) {
     // Use the path module to convert the path to the appropriate format for the current platform
     const platformIndependentFilePath = path.join(pathValue);
 
     if (!fs.existsSync(platformIndependentFilePath)) {
-        console.error(`The specified path: ${platformIndependentFilePath} does not exist. Make sure that path is valid`);
+        console.error(`The specified path: ${platformIndependentFilePath} for ${keyName} does not exist. Make sure that path is valid`);
         process.exit(1);
     }
     return platformIndependentFilePath;

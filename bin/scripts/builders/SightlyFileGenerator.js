@@ -27,8 +27,6 @@ export class SightlyFileGenerator extends FileGenerator {
         await replaceWithSlyTag($, modelName);
         await translateDynamicElements($);
         await selectFinder($);
-        // await imageGenerator($);
-        // await hasContent($, modelName);
 
         //Remove the empty lines using regex expression
         return $.html().replace(/^\s*\n/gm, '');

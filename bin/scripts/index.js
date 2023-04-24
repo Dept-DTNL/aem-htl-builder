@@ -4,15 +4,17 @@ import {SightlyFileGenerator} from "./builders/SightlyFileGenerator.js";
 import {JavaFileGenerator} from "./builders/JavaFileGenerator.js";
 import {XmlFileGenerator} from "./builders/XmlFileGenerator.js";
 import {
-    ConfigurationHelper, getHtmlPath,
+    ConfigurationHelper, getHtmlDirectoryPath, getHtmlPath,
     getUseHtmlAbsoluteFile
 } from "./configuration-helper.js";
 import {JsonGenerator} from "./builders/JsonGenerator.js";
+import {HtmlFileGenerator} from "./builders/HtmlFileGenerator.js";
 
 export async function main(configFile) {
     if (configFile) {
         let useHtmlAbsolutePath = getUseHtmlAbsoluteFile(configFile);
         let htmlFilePath;
+        let htmlDir;
         let javaDirectory;
         let xmlDialogDirectory;
         let xmlBasicDirectory;
@@ -21,7 +23,8 @@ export async function main(configFile) {
         let rootPackage;
 
         if (!useHtmlAbsolutePath) {
-            htmlFilePath = await inqFile();
+            let htmlDirPath = getHtmlDirectoryPath(configFile);
+            htmlFilePath = await inqFile(htmlDirPath);
         }
         let modelName = await nameModel();
 
@@ -40,6 +43,7 @@ export async function main(configFile) {
         data.rootPackage = rootPackage;
         await addTabs();
 
+        const htmlFile = new HtmlFileGenerator(htmlFilePath, modelName+"Original", xmlBasicDirectory);
         const sightlyFile = new SightlyFileGenerator(htmlFilePath, modelName, xmlBasicDirectory);
         const javaFile = new JavaFileGenerator('SlingModel.java.ejs', modelName + "Model", javaDirectory);
         // TODO We can have multiple lists, so we need to iterate over them and make
@@ -48,6 +52,7 @@ export async function main(configFile) {
         const xmlDialog = new XmlFileGenerator('_cq_dialog/.content.xml.ejs', ".content", xmlDialogDirectory);
 
         await sightlyFile.generateFile();
+        await htmlFile.generateFile();
         await javaFile.generateFile();
         await xmlDialog.generateFile();
         await xmlBasic.generateFile();
