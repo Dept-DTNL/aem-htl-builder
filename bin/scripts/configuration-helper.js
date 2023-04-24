@@ -88,14 +88,18 @@ export class ConfigurationHelper {
         let rootPackage = this.getProjectField("rootPackage");
         if (this.projectPath && rootPackage) {
             let rootPackageSlashes = rootPackage.replace(/\./g, path.sep);
-            return checkIfPathExists(this.projectPath + "\\core\\src\\main\\java\\" + rootPackageSlashes + "\\models");
+            return checkIfPathExists(
+                path.join(this.projectPath, 'core', 'src', 'main', 'java', rootPackageSlashes, 'models')
+            );
         }
     }
 
     getDialogDestination() {
         let componentParentPath = this.getProjectField("componentParentPath");
         if (this.projectPath && componentParentPath) {
-            return checkIfPathExists(this.projectPath + "\\ui.apps\\src\\main\\content\\jcr_root\\apps\\" + componentParentPath);
+            return checkIfPathExists(
+                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', componentParentPath)
+            );
         }
     }
 
@@ -128,14 +132,18 @@ export class ConfigurationHelper {
     getI18nDestination() {
         let i18nPath = this.getProjectField("i18nPath", true);
         if (this.projectPath && i18nPath) {
-            return checkIfPathExists(this.projectPath + "\\ui.apps\\src\\main\\content\\jcr_root\\apps\\" + i18nPath, true);
+            return checkIfPathExists(
+                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', i18nPath)
+            );
         }
     }
 
     getTemplatesDirectory() {
         let templatesDirectory = this.configData.templatesPath;
         if (this.projectPath && templatesDirectory) {
-            return checkIfPathExists(this.projectPath + "\\" + templatesDirectory);
+            return checkIfPathExists(
+                path.join(this.projectPath, templatesDirectory)
+            );
         }
     }
 

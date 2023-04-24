@@ -373,7 +373,7 @@ To describe the field, the field must exist in the first place.
     value="title"
     fieldDescription="This field defined the firstName"/>
 ```
-### 8. list-listName
+### 9. list-listName
 The module automatically detects and parses all the `<ul>` list occurances. However, the user still needs to define the list name. If the data-list is missing in the `<ul>` the default list name will be assigned.
 
 Furthermore, under newly created list in Sightly, there will be commented original list.
