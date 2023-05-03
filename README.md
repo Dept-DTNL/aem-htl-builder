@@ -36,53 +36,51 @@ If you cloned this repository instead of installing it via npm, to run the scrip
 
 ## Configuration
 After installing the module, you need to set up a configuration file.
-Run the following command
+Run the following command to create an empty configuration file.
 ```bash
   npm aem-htl-builder configure
 ``` 
-You should be presented with prompt in your terminal where you will be asked to configure the module.
-
+Now that the file has been created you need to configure it.
 Here is an example of valid configuration file:
 
 ```json
 {
   "project": {
-    "projectPath": "C:\\projects\\aem-pizzeria",
+    "aemProjectPath": "C:\\projects\\aem-pizzeria",
     "rootPackage": "pizzeria.project.core",
-    "componentParentPath": "pizzeria\\components",
     "componentGroup": "Pizzeria - Content",
-    "i18nPath" : "pizzeria\\i18n"
+    "appName" : "pizzeria"
   },
   "html": {
-    "useAbsolutePath": true,
-    "htmlPath": "D:\\html-files\\test.html"
-  },
-  "templatesPath" : "ui.content\\src\\main\\content\\jcr_root\\conf\\pizzeria\\settings\\wcm\\templates"
+    "useSingleFile": true,
+    "singleFilePath": "D:\\html-files\\test.html",
+    "directoryPath": "D:\\html-files"
+  }
 }
 ```
 
 And below is the  detailed description of what each field does:
 1. To configure the project object:
-- **projectPath**: Specify the absolute path to your local AEM project.
-- **rootPackage**: Specify the directory holding AEM Sling models. Sling models are Java classes that map JCR nodes and properties to Java objects. These objects can then be used in the development of AEM components, services, and other applications.
-- **componentParentPath**: Specify the directory holding the AEM component dialogs. The component dialogs are a type of AEM component that allows authors to enter content using a form-based interface.
-- **componentGroup**: Specify the component group to which the components will be added. Adding components to a group helps organize them in the AEM authoring interface.
-- **i18nPath** *(optional)*: Specify the directory holding the AEM i18n files which are later used for translating content. Internationalization (i18n) files provide translations for user-facing text and labels in AEM applications.
+- **aemProjectPath**: Specify the absolute path to your local AEM project.
+- **rootPackage**: Specify the directory holding AEM Sling models. You can find it at `aemProjectName/core/src/main/java/`
+- **componentGroup**: Specify the component group to which the components will be added. 
+- **appName**: The appName field represents the name of the root folder within the `aemProjectName/ui.apps/src/main/content/jcr_root/apps/` directory in your AEM project. This folder contains your project-specific components, templates, and other resources.
 2. To configure the html object:
-- **useAbsolutePath**: If set to true, the module will read and use the HTML file from the htmlPath field. If set to false, the module will prompt the user to select an HTML file via the terminal.
-- **htmlPath** : Specify the path to an existing HTML file.
+- **useSingleFile**: If set to true, the module will read and use the HTML file from the `singleFilePath` field. If set to false, the module will prompt the user to select an HTML file via the terminal from `directoryPath`.
+- **singleFilePath** : Specify the path to an existing HTML file.
+- **directoryPath** : Specify the path to an existing directory containing HTML files which you will use do build AEM component.
 
 ### Note
 You can also set-up configuration by simply running the script with already specified parameters (example below):
 ```bash
 aem-htl-builder configure \
---projectPath="C:\projects\aem-pizzeria" \
+--aemProjectPath="C:\projects\aem-pizzeria" \
 --rootPackage="pizzeria.project.core" \
---componentParentPath="pizzeria\\components" \
 --componentGroup="Pizzeria - Content" \
---i18nPath="pizzeria\\i18n" \
---useAbsolutePath=true \
---htmlPath="D:\\html-files\\test.html" 
+--appName="pizzeria" \
+--useSingleFile=true \
+--singleFilePath="D:\\html-files\\test.html" 
+--directoryPath="D:\\html-files" 
 ```
 ## Convert HTML to Sightly
 After successfully setting up configuration, 

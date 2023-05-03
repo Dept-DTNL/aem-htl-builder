@@ -1,6 +1,6 @@
 {
   "name": "aem-htl-builder",
-  "version": "1.0.62",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",

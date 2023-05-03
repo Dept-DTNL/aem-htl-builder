@@ -3,77 +3,12 @@ import {posix as path} from "path";
 
 
 /**
- * Read the content of the JSON file
- * @returns {Promise<unknown>}
- */
-export function readConfigFile() {
-    //TODO: 1. Check if the file exists
-    return new Promise((resolve, reject) => {
-        fs.readFile(path.resolve(process.cwd(), '../config.json'), 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                const config = JSON.parse(data);
-                if (!config.useCustomConfig) {
-                    resolve(false);
-                }
-                resolve(config);
-            }
-        });
-    });
-}
-
-export function useHtmlAbsoluteFile() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path.resolve(process.cwd(), '../config.json'), 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                const config = JSON.parse(data);
-                if (!config.html.useAbsolutePath) {
-                    resolve(false);
-                }
-                resolve(true);
-            }
-        });
-    });
-}
-
-export function readConfigProperty(property) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path.resolve(process.cwd(), '../config.json'), 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                const config = JSON.parse(data);
-                if (!config.useCustomConfig) {
-                    resolve(false);
-                }
-                if (config[property]) {
-                    resolve(path.join(config[property]));
-                } else {
-                    const propertyParts = property.split('.');
-                    let nestedObject = config;
-                    for (const part of propertyParts) {
-                        nestedObject = nestedObject[part];
-                        if (nestedObject === undefined) {
-                            throw new Error(`${property} not found in config.json`);
-                        }
-                    }
-                    resolve(path.join(nestedObject));
-                }
-            }
-        });
-    });
-}
-
-/**
  * This class provides helper methods for reading and processing the content of the configuration file.
  */
 export class ConfigurationHelper {
     constructor(configData) {
         this.configData = configData;
-        this.projectPath = this.getProjectPath("projectPath");
+        this.projectPath = this.getProjectPath("aemProjectPath");
         this.uiAppsPath = this.getUiApps();
     }
 
@@ -82,7 +17,7 @@ export class ConfigurationHelper {
         if (!configData.project) {
             throw new Error(`No project path is defined in the configuration file`);
         }
-        return checkIfPathExists(configData.project.projectPath,'projectPath');
+        return checkIfPathExists(configData.project.aemProjectPath,'aemProjectPath');
     }
 
     getJavaDestination() {
@@ -106,39 +41,38 @@ export class ConfigurationHelper {
     }
 
     getUiApps(){
-        let uiAppsName = this.getProjectField("uiAppsName");
-        if (this.projectPath && uiAppsName) {
+        let appName = this.getProjectField("appName");
+        if (this.projectPath && appName) {
             return checkIfPathExists(
-                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', uiAppsName),
-                'uiAppsName'
+                path.join(this.projectPath, 'ui.apps', 'src', 'main', 'content','jcr_root','apps', appName),
+                'appName'
             );
         }
     }
 
     /**
-     * Check if the htmlPath is defined in the configuration file
+     * Check if the singleFilePath is defined in the configuration file
      * @returns {Promise<*>}
      */
     getHtmlPath() {
         let configData = this.configData;
         // Check if the output file name is set in the configuration file
-        if (!configData.html.htmlPath) {
+        if (!configData.html.singleFilePath) {
             console.log(`No file path is defined in the configuration file`);
             return; // Exit the function
         }
         // Check if the file path is valid and has a .html extension
-        const htmlPath = configData.html.htmlPath;
-        const extname = path.extname(htmlPath);
+        const singleFilePath = configData.html.singleFilePath;
+        const extname = path.extname(singleFilePath);
         if (extname !== '.html') {
             console.log(`The specified file is not an HTML file. Make sure that file is an HTML file`);
             return; // Exit the function
         }
-        if (!checkIfPathExists(htmlPath)) {
+        if (!checkIfPathExists(singleFilePath)) {
             console.log(`The specified file path is not valid. Make sure that path is valid in configuration`);
             return; // Exit the function
         }
-        // console.log('Reading the HTML file at ' + htmlPath);
-        return htmlPath;
+        return singleFilePath;
     }
 
     getI18nDestination() {
@@ -151,10 +85,10 @@ export class ConfigurationHelper {
     }
 
     getTemplatesDirectory() {
-        let uiAppsName = this.getProjectField("uiAppsName");
-        if (this.projectPath && uiAppsName) {
+        let appName = this.getProjectField("appName");
+        if (this.projectPath && appName) {
             return checkIfPathExists(
-                path.join(this.projectPath, 'ui.content', 'src', 'main', 'content','jcr_root','conf', uiAppsName,
+                path.join(this.projectPath, 'ui.content', 'src', 'main', 'content','jcr_root','conf', appName,
                     'settings', 'wcm','templates'),
                 'templatesPath'
             );
@@ -175,17 +109,17 @@ export class ConfigurationHelper {
     }
 }
 export function getUseHtmlAbsoluteFile(configData) {
-    return configData.html["useAbsolutePath"];
+    return configData.html["useSingleFile"];
 }
 
-export function getHtmlPath(configData) {
-    const field = configData.html["htmlPath"];
-    return checkIfPathExists(field,'htmlPath');
+export function getSingleFilePath(configData) {
+    const field = configData.html["singleFilePath"];
+    return checkIfPathExists(field,'singleFilePath');
 }
 
 export function getHtmlDirectoryPath(configData,){
-    const directory = configData.html["dirContainingHtmlFiles"];
-    return checkIfPathExists(directory,'dirContainingHtmlFiles');
+    const directory = configData.html["directoryPath"];
+    return checkIfPathExists(directory,'directoryPath');
 }
 
 export function checkIfPathExists(pathValue,keyName) {
