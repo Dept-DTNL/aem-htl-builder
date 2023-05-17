@@ -28,7 +28,7 @@ export async function nameModel() {
             type: "input",
             name: "fileName",
             message: "What is the name of the model? ",
-            default: 'translatorTest'
+            default: 'pizzeria'
         }
     ]).then(async function (r) {
         //Make the model name start with a capital letter
@@ -282,8 +282,8 @@ export async function addTabs() {
         name: "include_tabs",
         message: "Do you want to have multiple tabs",
         choices: [
-            {name: 'yes', value: true},
             {name: 'no', value: false},
+            {name: 'yes', value: true},
         ]
     }).then(async answer => {
         if (answer.include_tabs) {

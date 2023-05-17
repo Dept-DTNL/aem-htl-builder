@@ -2,10 +2,7 @@
 The goal of this project is to automize the process of translating the html file into sightly
 and generating AEM components. This project is being developed as a part of the IT Graduation project.
 
-Currently the project is non-functional and is under development, therefore more than likely the module won't work upon installation. It has been published for internal testing purposes.
-
-
-The estimated delivery date of the project is 30th of June 2023.
+Please feel free to leave any feedback or remarks about the project on the github discussion page.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.txt file for details.
