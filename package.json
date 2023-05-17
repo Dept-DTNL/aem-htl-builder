@@ -10,10 +10,10 @@
     "convert": "node bin/scripts/command.js convert",
     "templates": "node bin/scripts/command.js templates"
   },
-  "homepage": "https://github.com/MarkStryjenski/terminal-node-js/blob/master/README.md",
+  "homepage": "https://github.com/Dept-DTNL/aem-htl-builder/blob/main/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MarkStryjenski/terminal-node-js.git"
+    "url": "https://github.com/Dept-DTNL/aem-htl-builder.git"
   },
   "keywords": [
     "AEM",
