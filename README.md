@@ -43,10 +43,10 @@ Here is an example of valid configuration file:
 ```json
 {
   "project": {
-    "aemProjectPath": "C:\\projects\\aem-pizzeria",
-    "rootPackage": "pizzeria.project.core",
-    "componentGroup": "Pizzeria - Content",
-    "appName" : "pizzeria"
+    "aemProjectPath": "C:\\projects\\mysite",
+    "rootPackage": "com.mysite.core",
+    "componentGroup": "MySite - Content",
+    "appName" : "mysite"
   },
   "html": {
     "useSingleFile": true,
@@ -71,10 +71,10 @@ And below is the  detailed description of what each field does:
 You can also set-up configuration by simply running the script with already specified parameters (example below):
 ```bash
 aem-htl-builder configure \
---aemProjectPath="C:\projects\aem-pizzeria" \
---rootPackage="pizzeria.project.core" \
---componentGroup="Pizzeria - Content" \
---appName="pizzeria" \
+--aemProjectPath="C:\projects\mysite" \
+--rootPackage="com.mysite.core" \
+--componentGroup="MySite - Content" \
+--appName="mysite" \
 --useSingleFile=true \
 --singleFilePath="D:\\html-files\\test.html" 
 --directoryPath="D:\\html-files" 

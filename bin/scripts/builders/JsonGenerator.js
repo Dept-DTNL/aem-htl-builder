@@ -31,7 +31,15 @@ export class JsonGenerator extends FileGenerator {
 
     getNewFilePath() {
         const fileName = `${this._fileName}.${this._fileType}`;
-        return path.join(this.destinationDirectory + "/" + fileName);
+
+        let filePath = path.join(this.destinationDirectory + "/" + fileName);
+        if(!fs.existsSync(filePath)){
+            const data = {
+                Hello : "Hello"
+            };
+            fs.writeFileSync(filePath,JSON.stringify(data, null, 4),'utf8');
+        }
+        return filePath;
     }
 
 
