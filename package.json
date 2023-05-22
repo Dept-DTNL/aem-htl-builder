@@ -1,7 +1,7 @@
 {
   "name": "aem-htl-builder",
   "version": "1.0.0",
-  "description": "",
+  "description": "Module for Adobe Experience Manager (AEM) to automate the conversion of HTML code into Sightly, as well as generate the associated Java Sling Models and XML dialogs, aiming to streamline the development process of AEM components.",
   "main": "index.js",
   "type": "module",
   "scripts": {
