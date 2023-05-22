@@ -518,12 +518,3 @@ public class AwsModel{
     </field>
 </awsModelList>
 ```
-
-## Feedback
-
-Your feedback is crucial to the continual improvement of this project. To help evaluate the effectiveness and efficiency of the aem-htl-builder module, I have created a user testing document: `AEM-HTL-Builder Efficiency Evaluation Test.pdf`.
-
-I kindly invite you to follow the instructions in this document and share your experiences.
-This exercise is designed to help me identify areas where I can further improve the project.
-
-Thank you for your time :)
