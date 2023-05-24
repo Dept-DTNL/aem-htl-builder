@@ -43,15 +43,15 @@ Here is an example of valid configuration file:
 ```json
 {
   "project": {
-    "aemProjectPath": "C:\\projects\\mysite",
+    "aemProjectPath": "/Users/username/projects/mysite",
     "rootPackage": "com.mysite.core",
     "componentGroup": "MySite - Content",
     "appName" : "mysite"
   },
   "html": {
     "useSingleFile": true,
-    "singleFilePath": "D:\\html-files\\test.html",
-    "directoryPath": "D:\\html-files"
+    "singleFilePath": "/Users/username/html-files/test.html",
+    "directoryPath": "/Users/username/html-files"
   }
 }
 ```
@@ -71,195 +71,100 @@ And below is the  detailed description of what each field does:
 You can also set-up configuration by simply running the script with already specified parameters (example below):
 ```bash
 aem-htl-builder configure \
---aemProjectPath="C:\projects\mysite" \
+--aemProjectPath="/Users/username/projects/mysite" \
 --rootPackage="com.mysite.core" \
 --componentGroup="MySite - Content" \
 --appName="mysite" \
 --useSingleFile=true \
---singleFilePath="D:\\html-files\\test.html" \
---directoryPath="D:\\html-files" 
-```
-## Convert HTML to Sightly
-After successfully setting up configuration, 
-Run the following command to convert html file into Sightly
-```bash
-  npm aem-htl-builder convert
+--singleFilePath="/Users/username/html-files/test.html" \
+--directoryPath="/Users/username/html-files"
 ```
 
 ## Syntax
-In the list below I present the required attribute HTML syntax for each of the attributes
-and the corresponding **Sightly**, **Sling Model** and **XML Dialog** output.
+This section provides a detailed guide on how to prepare your HTML for processing by this module. 
+It covers the necessary attribute HTML syntax for each AEM component field type.
 
 Here is a list of all the attributes that are currently supported by the module:
-- textfield-textFieldName
-- textarea-textAreaName
-- checkbox-checkName
-- link-linkName
-- img-imgReference
-- ~~select-selectName~~
+- textfield-[VarName]
+- textarea-[VarName]
+- checkbox-[VarName]
+- link-[VarName]
+- img-[VarName]
+- select-[VarName]
 - description
-- list-listName
-- i18n-varName
+- i18n-[VarName]
+- list-[VarName]
 
-### 1. textfield-Title
-- HTML:
+The [VarName] placeholder represents the variable name you choose for the field and should be replaced by the actual name in your HTML.
+### 1. Add textField
+To add a textfield to your component, you need to follow these steps:
+
+Add the textfield-[VarName] attribute to your paragraph tag, replacing [VarName] with your chosen field name.
+- HTML Original:
 ```html
-<p textfield-title> John </p>
+<p> Component Title </p>
 ```
-
-- Sightly:
+- What module expects:
 ```html
-<p>${model.title}</p>
+<p textfield-title> Component Title </p>
 ```
 
-- Sling Model:
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected String title;
-```
+### 2. textarea-[VarName]
+To add a textarea to your component, you need to follow these steps:
 
-- XML Dialog:
-```xml
-<title
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-    fieldLabel="title"
-    name="./title"
-    value="title"/>
-```
-
-### 2. textarea-message
-- HTML:
+Add the textarea-[VarName] attribute to your paragraph tag, replacing [VarName] with your chosen field name.
+- HTML Original:
 ```html
-<p textarea-message>Lorem Ipsum is simply dummy text of the printing and
-    typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-    when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+<p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 ```
 
-- Sightly:
+- What module expects:
 ```html
-<p>${model.message}</p>
+<p textarea-message> Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 ```
 
-- Sling Model:
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected String message;
+### 3. checkbox-[varName]
+- HTML Original:
+```html
+<div>
+    <p>Species: Human</p>
+</div>
 ```
-
-- XML Dialog:
-```xml
-<message
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
-    fieldLabel="message"
-    name="./message"
-    value="message"/>
-```
-### 3. checkbox-check
-- HTML:
+- What module expects:
 ```html
 <div checkbox-check>
     <p>Species: Human</p>
 </div>
 ```
+### 4. link-[VarName]
+To add a link to your component, you need to follow these steps:
 
-- Sightly:
+Add the link-[VarName] attribute to your paragraph tag, replacing [VarName] with your chosen field name.
+- HTML Original:
 ```html
-<div data-sly-test="${model.check}">
-    <p>Species: Human</p>
-</div>
-```
-
-- Sling Model:
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected boolean check;
-```
-
-- XML Dialog:
-```xml
-<check
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-    text="check"
-    name="./check"
-    uncheckedValue="false"
-    value="true"/>
-```
-### 4. link-linkName
-- HTML:
-```html
-<a link-link1 class="Banner" href="www.webTest.com">
-    <strong textfield-preTitle1 class="Banner--tag">Banner PreTitle</strong>
+<a href="#">
+    Click Here
 </a>
 ```
 
-- Sightly:
+- What module expects:
 ```html
-<a class="Banner" href="${model.link1}" target="${model.linkCheckbox ? '_blank' : '_self'}">
-    <strong class="Banner--tag">${model.preTitle1}</strong>
+<a link-linkToWebsite href="#">
+    Click Here
 </a>
 ```
+### 5. img-[VarName]
+To add an image to your component, you need to follow these steps:
 
-- Sling Model:
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected String link1;
+Add the img-[VarName] attribute to your html tag, replacing [VarName] with your chosen field name.
 
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected Boolean link1Checkbox;
-```
-
-- XML Dialog:
-```xml
-<link1Checkbox
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/foundation/form/checkbox"
-    text="Open link in another tab."
-    name="./link1Checkbox"
-    value="true"/>
-<link1
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-    fieldLabel="link1"
-    name="./link1"
-    required="{Boolean}false"
-    rootPath="/content"/>
-```
-### 5. img-imgName
-- HTML:
+- HTML Original:
 ```html
-<img img-img1 class="Banner--img" src="/dummy//svg/1.svg" alt=""/>
+<img src="/banners/img1.png" alt="Img Description"/>
 ```
-
-- Sightly:
+- What module expects:
 ```html
-<img class="Banner--img" src="${model.img1Reference @ context='uri'}" alt="" data-sly-test="${model.img1Reference}"/>
-```
-
-- Sling Model:
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected String img1Reference;
-```
-
-- XML Dialog:
-```xml
-<img1
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
-    autoStart="{Boolean}false"
-    class="cq-droptarget"
-    fieldLabel="Image"
-    fileNameParameter="./img1Name"
-    fileReferenceParameter="./img1Reference"
-    mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
-    multiple="{Boolean}false"
-    name="./img1"
-    title="Image"
-    uploadUrl="${suffix.path}"
-    useHTML5="{Boolean}true"/>
+<img img-bannerImg src="/banners/img1.png" alt="Img Description"/>
 ```
 ### 6. ~~data-select-cars~~ (As of right now non functional)
 - ~~HTML:~~
@@ -272,214 +177,115 @@ protected String img1Reference;
 </select>
 ```
 
-- ~~Sightly:~~
-```html
-<p>${model.cars}</p>
-```
+### 7. i18n-[VarName]
+If you have an element in your html which will be used for i18n you will need to:
 
-- ~~Sling Model:~~
-```java
-@ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
-protected String cars;
-```
-
-- ~~XML Dialog:~~
-```xml
-<cars
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/select"
-    fieldLabel="cars"
-    name="./cars">
-    <items jcr:primaryType="nt:unstructured">
-        
-            <Volvo
-             jcr:primaryType="nt:unstructured"
-             text="Volvo"
-             value="Volvo"/>
-        
-            <Saab
-             jcr:primaryType="nt:unstructured"
-             text="Saab"
-             value="Saab"/>
-        
-            <Mercedes
-             jcr:primaryType="nt:unstructured"
-             text="Mercedes"
-             value="Mercedes"/>
-        
-            <Audi
-             jcr:primaryType="nt:unstructured"
-             text="Audi"
-             value="Audi"/>
-        
-    </items>
-</cars>
-```
-### 7. i18n-keyName
-- HTML:
+Add the i18n-[VarName] attribute to your html tag, replacing [VarName] with your chosen field name.
+- HTML Original:
 ```html
 <div>
-    <span i18n-destination>Destination</span>
-    <span i18n-person>Person</span>
+    <span>Location</span>
+    <span>Contact</span>
 </div>
 ```
 
-- Sightly:
+- What module expects:
 ```html
 <div>
-    <span>${'Destination' @ i18n}</span>
-    <span>${'Person' @ i18n}</span>
+    <span i18n-location>Location</span>
+    <span i18n-contact>Contact</span>
 </div>
 ```
 
+After running `aem-htl-builder convert` command following will be added to:
 - en.json:
 ```json
 {
-    ...Previous elements,
-    "Destination": "Destination",
-    "Person": "Person"
+    "Location": "Location",
+    "Contact": "Contact"
 }
 ```
 
 #### Note
-If there is already in en.json file the key with the same name e.g. 'Person' this example would override
+If there is already in en.json file the key with the same name e.g. 'Location' this example would override
 its value with new one.
 
 ### 8. description
-The data-description requires the presence of another 'data-' attribute. 
-To describe the field, the field must exist in the first place.
-- HTML:
+The `description` requires the presence of another attribute from the list.
+- HTML Original:
 ```html
-<p textfield-title description="This field defines the firstName">John</p>
+<p> Component Title </p>
 ```
-
-- Sightly:
+- What module expects:
 ```html
-<p>${model.title}</p>
+<p textfield-title description="This field defines the component title"> Component Title </p>
 ```
+`textfield-title` serves as an example and it can be as well e.g. `img-varName` , `link-varName` etc.
+### 9. list-[VarName]
+If you want to add a list to your component, you need to follow these steps:
 
-- XML Dialog:
-```xml
-<title
-    jcr:primaryType="nt:unstructured"
-    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-    fieldLabel="title"
-    name="./title"
-    value="title"
-    fieldDescription="This field defined the firstName"/>
-```
-### 9. list-listName
-The module automatically detects and parses all the `<ul>` list occurances. However, the user still needs to define the list name. If the data-list is missing in the `<ul>` the default list name will be assigned.
+Add the list-[VarName] attribute to `<ul>` tag, replacing [VarName] with your chosen list name.
 
-Furthermore, under newly created list in Sightly, there will be commented original list.
-- HTML:
+- HTML Original:
 ```html
-<ul list-aws class="Pizza--list">
-    <li class="Pizza">
+<ul>
+    <li>
         <div>
-            <h3 textfield-title class="title">Margarita</h3>
-            <p class="preTitle">Pizza</p>
+            <h3>Margherita</h3>
         </div>
-        <p textarea-text class="text">Tomato sauce and cheese.</p>
-        <a link-pizzaLink href="" class="Post--link link">www.website.com/en/pizzeria/pizzas/</a>
+        <p>10.99 €</p>
     </li>
     <li>
-        <img img-pizzaImg class="Pizza--img" src="/dummy//svg/2.svg" alt="">
+        <div>
+            <h3>Pepperoni</h3>
+        </div>
+        <a href="#">Click the link here!</a>
+        <p>13.99 €</p>
     </li>
 </ul>
 ```
-
-- Sightly:
+- What module expects:
 ```html
-    <ul class="Pizza--list" data-sly-list.awsModel="${model.awsModel}">
-    <li class="Pizza" id="someId">
-        <h3 class="title">${awsModel.title}</h3>
-        <p class="text">${awsModel.text}</p>
-        <a href="${awsModel.pizzaLink}" class="Post--link link"
-           target="${awsModel.pizzaLinkCheckbox ? '_blank' : '_self'}">www.website.com/en/pizzeria/pizzas/</a>
-        <img class="Pizza--img" src="${awsModel.pizzaImgReference @ context='uri'}" alt=""
-             data-sly-test="${awsModel.pizzaImgReference}"/>
+<ul list-pizzas>
+    <li>
+        <div>
+            <h3 textfield-title>Margherita</h3>
+        </div>
+        <p textfield-price>10.99 €</p>
+    </li>
+    <li>
+        <div>
+            <h3>Pepperoni</h3>
+        </div>
+        <a link-pizzaLink href="#">Click the link here!</a>
+        <p>13.99 €</p>
     </li>
 </ul>
 ```
+Notice that since this is a list you need to add attributes only to elements which you want to include in the list (multifield) only once.
 
-- Sling Model:
-```java
-@Getter
-@Model(adaptables = Resource.class, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
-public class AwsModel{
-    
-    @ValueMapValue(name="title")
-    @Inject
-    protected String title;
-              
-    @ValueMapValue(name="text")
-    @Inject
-    protected String text;
-                 
-    @ValueMapValue(name="pizzaLink")
-    @Inject
-    protected String pizzaLink;
+After running `aem-htl-builder convert` command following code will be added to component dialog:
 
-    @ValueMapValue(name="pizzaLinkCheckbox")
-    @Inject
-    protected Boolean pizzaLinkCheckbox;
-        
-    @ValueMapValue(name="pizzaImgReference")
-    @Inject
-    protected String pizzaImgReference;
-}
-```
-
-- New Sling Model for list:
-```java
-@Getter
-@Model(adaptables = Resource.class, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
-public class AwsModel{
-    
-    @ValueMapValue(name="title")
-    @Inject
-    protected String title;
-              
-    @ValueMapValue(name="text")
-    @Inject
-    protected String text;
-                 
-    @ValueMapValue(name="pizzaLink")
-    @Inject
-    protected String pizzaLink;
-
-    @ValueMapValue(name="pizzaLinkCheckbox")
-    @Inject
-    protected Boolean pizzaLinkCheckbox;
-        
-    @ValueMapValue(name="pizzaImgReference")
-    @Inject
-    protected String pizzaImgReference;
-}
-```
-
-- XML Dialog:
 ```xml
-<awsModelList
+<pizzasModelList
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
-        fieldLabel="awsModel"
+        fieldLabel="pizzasModel"
         composite="{Boolean}true">
     <field jcr:primaryType="nt:unstructured"
            sling:resourceType="granite/ui/components/coral/foundation/container"
-           name="./awsModel">
+           name="./pizzasModel">
         <items jcr:primaryType="nt:unstructured">
             <title
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                     fieldLabel="title"
                     name="./title"/>
-            <text
+            <price
                     jcr:primaryType="nt:unstructured"
-                    sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
-                    fieldLabel="text"
-                    name="./text"/>
+                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                    fieldLabel="price"
+                    name="./price"/>
             <pizzaLinkContainer
                     jcr:primaryType="nt:unstructured"
                     jcr:title="pizzaLink Container"
@@ -500,21 +306,15 @@ public class AwsModel{
                             rootPath="/content"/>
                 </items>
             </pizzaLinkContainer>
-            <pizzaImg
-                    jcr:primaryType="nt:unstructured"
-                    sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
-                    autoStart="{Boolean}false"
-                    class="cq-droptarget"
-                    fieldLabel="Image"
-                    fileNameParameter="./pizzaImgName"
-                    fileReferenceParameter="./pizzaImgReference"
-                    mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
-                    multiple="{Boolean}false"
-                    name="./pizzaImg"
-                    title="Image"
-                    uploadUrl="${suffix.path}"
-                    useHTML5="{Boolean}true"/>
         </items>
     </field>
-</awsModelList>
+</pizzasModelList>
+```
+*The module will as well add the original HTML list as a comment under the newly converted list.*
+
+## Convert HTML to Sightly
+After successfully setting up configuration, and adding custom attributes to original HTML file
+run the following command to create AEM component
+```bash
+  npm aem-htl-builder convert
 ```
