@@ -35,7 +35,7 @@ If you cloned this repository instead of installing it via npm, to run the scrip
 After installing the module, you need to set up a configuration file.
 Run the following command to create an empty configuration file.
 ```bash
-  npm aem-htl-builder configure
+  npx aem-htl-builder configure
 ``` 
 Now that the file has been created you need to configure it.
 Here is an example of valid configuration file:
@@ -316,5 +316,5 @@ After running `aem-htl-builder convert` command following code will be added to 
 After successfully setting up configuration, and adding custom attributes to original HTML file
 run the following command to create AEM component
 ```bash
-  npm aem-htl-builder convert
+  npx aem-htl-builder convert
 ```
