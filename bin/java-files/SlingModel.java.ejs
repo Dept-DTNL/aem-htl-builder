@@ -35,6 +35,16 @@ public class <%= className.charAt(0).toUpperCase() + className.slice(1) %> {
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     protected String <%= img.fileReference %>;
 <% }) %>
+<% videos.forEach((video) =>{ %>
+    @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
+    protected String <%= video.fileReference %>;
+
+    <% if(video.poster){ -%>
+
+    @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
+    protected String <%= video.poster %>;
+    <% } -%>
+<% }) %>
 <% links.forEach((link) =>{ %>
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     protected String <%= link.name %>;
@@ -62,13 +72,25 @@ public class <%= className.charAt(0).toUpperCase() + className.slice(1) %> {
 <% }) %>
 <% richTexts.forEach((richText) =>{ %>
     public String get<%= richText.name.charAt(0).toUpperCase() + richText.name.slice(1) %>(){
-    return <%= richText.name %>;
+        return <%= richText.name %>;
     }
 <% }) %>
 <% images.forEach((img) =>{ %>
     public String get<%= img.fileReference.charAt(0).toUpperCase() + img.fileReference.slice(1) %>(){
         return <%= img.fileReference %>;
     }
+<% }) %>
+<% videos.forEach((video) =>{ %>
+    public String get<%= video.fileReference.charAt(0).toUpperCase() + video.fileReference.slice(1) %>(){
+        return <%= video.fileReference %>;
+    }
+
+    <% if(video.poster){ -%>
+
+    public String get<%= video.poster.charAt(0).toUpperCase() + video.poster.slice(1) %>(){
+        return <%= video.poster %>;
+    }
+    <% } -%>
 <% }) %>
 <% links.forEach((link) =>{ %>
     public String get<%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %>(){
