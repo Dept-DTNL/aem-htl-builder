@@ -11,7 +11,6 @@ export class CheckBoxElement extends BaseElement {
         let modelName = this.listName ? this.listName : 'model';
         this.$(this.el).attr('data-sly-test', "${" + modelName + `.${this.variableName}` + "}");
         this.$(this.el).removeAttr(this.attrName);
-        // console.log('Processing CheckBox');
     }
 
     pushData() {

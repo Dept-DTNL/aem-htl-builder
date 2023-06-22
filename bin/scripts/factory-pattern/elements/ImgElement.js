@@ -31,7 +31,7 @@ export class ImgElement extends BaseElement {
 
     getListElement() {
         return {
-            name: this.variableName, img: {
+            img: {
                 name: this.variableName,
                 fileName: this.variableName + 'Name',
                 fileReference: this.variableName + 'Reference',

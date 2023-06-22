@@ -335,7 +335,7 @@
                                                         </<%= item.link.name %>Container>
                                                     <% } -%>
                                                     <% if(item.img){ -%>
-                                                        <<%= item.name %>
+                                                        <<%= item.img.name %>
                                                         jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
                                                         autoStart="{Boolean}false"
@@ -393,11 +393,11 @@
                                                             </VideoContainer>
                                                         <% } -%>
                                                     <% if(item.richText){ -%>
-                                                        <<%= item.name %>
+                                                        <<%= item.richText.name %>
                                                         jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="cq/gui/components/authoring/dialog/richtext"
                                                         fieldLabel="Text"
-                                                        name="./<%= item.name %>"
+                                                        name="./<%= item.richText.name %>"
                                                         <% if(item.richText.description != null){ -%>
                                                             fieldDescription="<%= item.richText.description %>"<%
                                                         } -%>
@@ -517,7 +517,7 @@
                                                                         toolbar="[table#insertcolumn-before,table#insertcolumn-after,table#removecolumn,-,table#insertrow-before,table#insertrow-after,table#removerow,-,table#mergecells-right,table#mergecells-down,table#mergecells,table#splitcell-horizontal,table#splitcell-vertical,-,table#selectrow,table#selectcolumn,-,table#ensureparagraph,-,table#modifytableandcell,table#removetable,-,undo#undo,undo#redo,-,table#exitTableEditing,-]"/>
                                                             </cui>
                                                         </uiSettings>
-                                            </<%= item.name %>>
+                                            </<%= item.richText.name %>>
                                             <% } -%>
                                             <% }) -%>
                     </items>
@@ -851,7 +851,7 @@
                                         </<%= item.link.name %>Container>
                                     <% } -%>
                                     <% if(item.img){ -%>
-                                            <<%= item.name %>
+                                            <<%= item.img.name %>
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
                                             autoStart="{Boolean}false"
@@ -909,11 +909,11 @@
                                             </VideoContainer>
                                         <% } -%>
                                     <% if(item.richText){ -%>
-                                            <<%= item.name %>
+                                            <<%= item.richText.name %>
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="cq/gui/components/authoring/dialog/richtext"
                                                     fieldLabel="Text"
-                                                    name="./<%= item.name %>"
+                                                    name="./<%= item.richText.name %>"
                                             <% if(item.richText.description != null){ -%>
                                                     fieldDescription="<%= item.richText.description %>"<%
                                             } -%>
@@ -1033,7 +1033,7 @@
                                                                 toolbar="[table#insertcolumn-before,table#insertcolumn-after,table#removecolumn,-,table#insertrow-before,table#insertrow-after,table#removerow,-,table#mergecells-right,table#mergecells-down,table#mergecells,table#splitcell-horizontal,table#splitcell-vertical,-,table#selectrow,table#selectcolumn,-,table#ensureparagraph,-,table#modifytableandcell,table#removetable,-,undo#undo,undo#redo,-,table#exitTableEditing,-]"/>
                                                     </cui>
                                                 </uiSettings>
-                                            </<%= item.name %>>
+                                            </<%= item.richText.name %>>
                                     <% } -%>
                                 <% }) -%>
                             </items>

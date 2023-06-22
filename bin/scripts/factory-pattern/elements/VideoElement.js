@@ -40,7 +40,7 @@ export class VideoElement extends BaseElement {
 
     getListElement() {
         return {
-            name: this.variableName, video: {
+            video: {
                 name: this.variableName,
                 fileName: this.variableName + 'Name',
                 fileReference: this.variableName + 'Reference',

@@ -32,9 +32,9 @@ public class <%= list.ulName.charAt(0).toUpperCase() + list.ulName.slice(1) %>{
     <% } -%>
 
     <% if(item.richText){ -%>
-    @ValueMapValue(name="<%= item.name %>")
+    @ValueMapValue(name="<%= item.richText.name %>")
     @Inject
-    protected String <%= item.name %>;
+    protected String <%= item.richText.name %>;
     <% } -%>
 
     <% if(item.img){ -%>

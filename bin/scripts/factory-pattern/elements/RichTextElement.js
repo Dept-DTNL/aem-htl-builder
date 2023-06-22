@@ -32,8 +32,9 @@ export class RichTextElement extends BaseElement {
 
     getListElement() {
         return {
-            name: this.variableName, richText: {
-                name: this.variableName, description: this.description,
+            richText: {
+                name: this.variableName,
+                description: this.description,
             }, element: this.$(this.el)
         };
     }

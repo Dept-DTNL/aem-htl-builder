@@ -32,6 +32,7 @@ export class LinkElement extends BaseElement {
     }
 
     getListElement() {
+        //TODO : Remove the name from here and update ejs files
         return {
             name: this.variableName, link: {
                 name: this.variableName, checkBox: this.checkBoxName, description: this.description,
